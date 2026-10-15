@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 0d81d21cba61eca438dcb3b1b4e6da0c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - blendedSkyboxMaterial: {instanceID: 0}
+  - morningSky: {instanceID: 0}
+  - afternoonSky: {instanceID: 0}
+  - eveningSky: {instanceID: 0}
+  - nightSky: {instanceID: 0}
+  - sunLight: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
