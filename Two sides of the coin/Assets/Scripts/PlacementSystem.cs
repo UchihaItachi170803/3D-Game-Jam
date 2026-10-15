@@ -21,7 +21,9 @@ public class PlacementSystem : MonoBehaviour
     {
         spawnActions = new Dictionary<int, System.Action>
         {
-            {1,resourceManager.Tree }
+            {1,resourceManager.Tree },
+            {2,resourceManager.RainWaterHarvestingSystem },
+            {3,resourceManager.GroundWaterSystem }
         };
     }
 
@@ -71,18 +73,34 @@ public class PlacementSystem : MonoBehaviour
         worldPos.y = 0;
         if(selectedData.ID == 1 && resourceManager.economy >= 30)
         {
-            GameObject newObject = Instantiate(selectedData.preFab);
-            newObject.transform.position = worldPos;
-            if (spawnActions.TryGetValue(selectedData.ID, out var action))
-            {
-                action?.Invoke();
-            }
-            OccupyCells(GridPos, selectedData.Size);
+            ObjectSpawningAndSpaceOccupy(GridPos, selectedData, worldPos);
         }
-        
-        
-        
+        else if(selectedData.ID == 2 && resourceManager.economy >= 50)
+        {
+            ObjectSpawningAndSpaceOccupy(GridPos, selectedData, worldPos);
+        }
+        else if(selectedData.ID == 3 && resourceManager.economy >= 150)
+        {
+            ObjectSpawningAndSpaceOccupy(GridPos, selectedData, worldPos);
+        }
+        else if(selectedData.ID == 4 && resourceManager.economy >= 250)
+        {
+            ObjectSpawningAndSpaceOccupy(GridPos, selectedData, worldPos);
+        }
+
     }
+
+    private void ObjectSpawningAndSpaceOccupy(Vector3Int GridPos, ObjectData selectedData, Vector3 worldPos)
+    {
+        GameObject newObject = Instantiate(selectedData.preFab);
+        newObject.transform.position = worldPos;
+        if (spawnActions.TryGetValue(selectedData.ID, out var action))
+        {
+            action?.Invoke();
+        }
+        OccupyCells(GridPos, selectedData.Size);
+    }
+
     private void StopPlacement()
     {
         SelectedObjectIndex = -1;
