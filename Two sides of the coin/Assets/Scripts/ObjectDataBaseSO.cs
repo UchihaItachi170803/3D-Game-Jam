@@ -22,3 +22,5 @@ public class ObjectData
     [field: SerializeField]
     public GameObject preFab {  get; private set; }
 }
+
+

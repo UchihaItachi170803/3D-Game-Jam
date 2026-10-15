@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlacementSystem : MonoBehaviour
@@ -8,10 +9,21 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private Grid grid;
     [SerializeField] private ObjectDataBaseSO database;
     [SerializeField] private GameObject[] gridVisual;
+    [SerializeField] private ResourceManager resourceManager;
+
 
     private int SelectedObjectIndex = -1;
 
     private HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
+    private Dictionary<int, System.Action> spawnActions;
+
+    private void Awake()
+    {
+        spawnActions = new Dictionary<int, System.Action>
+        {
+            {1,resourceManager.Tree }
+        };
+    }
 
 
     private void Start()
@@ -23,6 +35,7 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         SelectedObjectIndex = database.objectsData.FindIndex(Data => Data.ID == ID);
+        
         if (SelectedObjectIndex < 0)
         {
             Debug.LogError("No ID Found " + ID);
@@ -39,10 +52,11 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnExit += StopPlacement;
     }
 
+    
+
     private void PlacedStructure()
     {
         if (inputManager.IsPointingUI()) return;
-
         Vector3 mousepos = inputManager.GetSelectMapPosition();
         Vector3Int GridPos = grid.WorldToCell(mousepos);
         ObjectData selectedData = database.objectsData[SelectedObjectIndex];
@@ -55,11 +69,19 @@ public class PlacementSystem : MonoBehaviour
 
         Vector3 worldPos = grid.GetCellCenterWorld(GridPos);
         worldPos.y = 0;
-
-        GameObject newObject = Instantiate(selectedData.preFab);
-        newObject.transform.position = worldPos;
-
-        OccupyCells(GridPos, selectedData.Size);
+        if(selectedData.ID == 1 && resourceManager.economy >= 30)
+        {
+            GameObject newObject = Instantiate(selectedData.preFab);
+            newObject.transform.position = worldPos;
+            if (spawnActions.TryGetValue(selectedData.ID, out var action))
+            {
+                action?.Invoke();
+            }
+            OccupyCells(GridPos, selectedData.Size);
+        }
+        
+        
+        
     }
     private void StopPlacement()
     {
@@ -91,7 +113,7 @@ public class PlacementSystem : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                Vector3Int cellToCheck = gridPos;
+                Vector3Int cellToCheck = gridPos + new Vector3Int(x,0,y);
                 if (occupiedPositions.Contains(cellToCheck))
                 {
                     return false;
@@ -107,7 +129,7 @@ public class PlacementSystem : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                Vector3Int cellToOccupy = gridPos;
+                Vector3Int cellToOccupy = gridPos + new Vector3Int(x,0,y);
                 occupiedPositions.Add(cellToOccupy);
             }
         }

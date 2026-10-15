@@ -13,15 +13,11 @@ MonoBehaviour:
   m_Name: New Object Data Base SO
   m_EditorClassIdentifier: Assembly-CSharp::ObjectDataBaseSO
   objectsData:
-  - <name>k__BackingField: WaterTank
+  - <name>k__BackingField: Tree
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <preFab>k__BackingField: {fileID: 1291721714139435780, guid: 0d99cb45c45c34d45b6fcc758c6dd3d3, type: 3}
-  - <name>k__BackingField: Road
+  - <name>k__BackingField: IDK
     <ID>k__BackingField: 2
-    <Size>k__BackingField: {x: 2, y: 2}
-    <preFab>k__BackingField: {fileID: 6740011656069711232, guid: b0291827e41355e4fbc300640d2760f3, type: 3}
-  - <name>k__BackingField: Water Tank
-    <ID>k__BackingField: 3
     <Size>k__BackingField: {x: 1, y: 1}
-    <preFab>k__BackingField: {fileID: 6740011656069711232, guid: b0291827e41355e4fbc300640d2760f3, type: 3}
+    <preFab>k__BackingField: {fileID: 1291721714139435780, guid: 0d99cb45c45c34d45b6fcc758c6dd3d3, type: 3}
