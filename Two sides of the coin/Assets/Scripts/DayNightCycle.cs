@@ -6,12 +6,12 @@ public class DayNightCycle : MonoBehaviour
     public float dayInMinutes = 15f;
     [Range(0f, 1f)] public float timeOfDay = 0.25f;
 
-    [Header("Skybox Materials (FS002)")]
-    public Material morningSky;    // FS002_Sunrise
-    public Material daySky;        // FS002_Day
-    public Material eveningSky;    // FS002_Sunset
-    public Material nightSky;      // FS002_Night
-    public Material rainySky;      // FS002_Rainy
+    [Header("Skybox Materials ")]
+    public Material morningSky;    
+    public Material daySky;        
+    public Material eveningSky;    
+    public Material nightSky;      
+    public Material rainySky;      
 
     [Header("Rain System")]
     public bool isRaining = false;
