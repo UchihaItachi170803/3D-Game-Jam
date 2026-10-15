@@ -19,8 +19,6 @@ public class ResourceManager : MonoBehaviour
     float waterRateInCity = 0.5f; //Per Person
     float waterRateInVillage = 0.2f; //Per Person
 
-    int perPersonWaterConsumptionCity = 8;
-    int perPersonWaterConsumptionVillage = 6;
     private float RainTimer = 20f;
     int harvestCounter = 0;
     bool IsHarvest;
@@ -51,7 +49,7 @@ public class ResourceManager : MonoBehaviour
         if (RainTimer <= 0)
         {
             RainTimer = 20f;
-            economy = (perPersonWaterConsumptionCity*populationCity) + (perPersonWaterConsumptionVillage*populationVillage);
+            economy = (waterRateInCity*populationCity) + (waterRateInVillage*populationVillage);
             Debug.Log("Economy :" + economy);
             RainSystem();
         }
@@ -61,7 +59,7 @@ public class ResourceManager : MonoBehaviour
     {
         var Horizontal = Input.GetAxisRaw("Horizontal");
         var Vertical = Input.GetAxisRaw("Vertical");
-        transform.position +=new Vector3 (Horizontal,0, Vertical)*speed * Time.deltaTime;
+        transform.position +=new Vector3 (Vertical,0, -Horizontal)*speed * Time.deltaTime;
        
     }
 
