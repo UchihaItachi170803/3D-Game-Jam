@@ -15,7 +15,13 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private int waterSupplyedToVillage;
     [SerializeField] private int waterSupplyedToCity;
     [SerializeField] private ObjectDataBaseSO dataBase;
-    private float RainTimer = 9f;
+
+    float waterRateInCity = 0.5f; //Per Person
+    float waterRateInVillage = 0.2f; //Per Person
+
+    private float RainTimer = 20f;
+    int harvestCounter = 0;
+    bool IsHarvest;
 
 
 
@@ -23,8 +29,8 @@ public class ResourceManager : MonoBehaviour
     {
         waterCapacity = 1000f;
         economy = 0;
-        populationCity = 1000;
-        populationVillage = 500;
+        populationCity = 100;
+        populationVillage = 100;
         rainProbability = 10;
         Debug.Log(waterCapacity);
 
@@ -42,8 +48,8 @@ public class ResourceManager : MonoBehaviour
         RainTimer -= Time.deltaTime;
         if (RainTimer <= 0)
         {
-            RainTimer = 9f;
-            economy += 50f;
+            RainTimer = 20f;
+            economy = (waterRateInCity*populationCity) + (waterRateInVillage*populationVillage);
             Debug.Log("Economy :" + economy);
             RainSystem();
         }
@@ -53,21 +59,31 @@ public class ResourceManager : MonoBehaviour
     {
         var Horizontal = Input.GetAxisRaw("Horizontal");
         var Vertical = Input.GetAxisRaw("Vertical");
-        transform.position +=new Vector3 (Horizontal,0, Vertical)*speed * Time.deltaTime;
+        transform.position +=new Vector3 (Vertical,0, -Horizontal)*speed * Time.deltaTime;
        
     }
 
     private void RainSystem()
     {
-        int RandomChanceToRain = Random.Range(1, 100);
+        IsRained = false;
+        int RandomChanceToRain = Random.Range(1, 101);
         Debug.Log("Chance :" + RandomChanceToRain);
-        if(RandomChanceToRain <= rainProbability)
+
+        if (RandomChanceToRain <= rainProbability)
         {
-            //TODO : Add particle Effect
             IsRained = true;
-            float waterAddedToWaterCapacity = waterCapacity * 0.02f;
-            waterCapacity += waterAddedToWaterCapacity;
-            Debug.Log("newWaterCapacity : " + waterCapacity);
+            float AddedWater;
+
+            if (harvestCounter > 0) 
+            {
+                AddedWater = harvestCounter * 40f;
+            }
+            else
+            {
+                AddedWater = 20f;
+            }
+
+            waterCapacity += AddedWater;
         }
         else
         {
@@ -77,32 +93,32 @@ public class ResourceManager : MonoBehaviour
 
     private void WaterConsumption()
     {
-
+       
     }
     public void Tree()
     {
         economy -= 30;
         rainProbability += 0.2f;
-        Debug.Log("Economy after Tree Purchase :" + economy);
-        Debug.Log("New RainProbability :" + rainProbability);
     }
 
-    private void RainWaterHarvestingSystem()
+    public void RainWaterHarvestingSystem()
     {
-        if(IsRained)
-        {
-            waterCapacity += 0.3f;
-        }
+        economy -= 100;
+        IsHarvest = true;
+        harvestCounter++;
+        
     }
     
-    private void GroundWaterSystem()
+    public void GroundWaterSystem()
     {
-        waterCapacity += 0.4f;
+        economy -= 150;
+        waterCapacity += 60f;
     }
 
-    private void WasteWaterRecycleSystem()
+    public void WasteWaterRecycleSystem()
     {
-        waterCapacity += 0.8f;
+        economy -= 250;
+        waterCapacity += 80f;
     }
 
     private void EconomyStuff()
@@ -113,10 +129,21 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    private void WaterNeed()
+    public void WaterNeed()
     {
+        //Per person spending 0.5 for water in city 
+        // per person spending 0.2 for water in city
         waterNeededForCity = waterCapacity * 0.8f;
         waterNeededForVillage = waterCapacity * 0.6f;
+        if(waterNeededForCity < waterNeededForCity * 0.2f)
+        {
+
+        }
+        if(waterNeededForVillage < waterNeededForVillage * 0.2f)
+        {
+
+        }
+        
 
     }
 }
