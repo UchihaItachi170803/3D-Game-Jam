@@ -531,6 +531,7 @@ MonoBehaviour:
   gridVisual:
   - {fileID: 1284572956}
   - {fileID: 7173047}
+  - {fileID: 0}
 --- !u!1 &498939673
 GameObject:
   m_ObjectHideFlags: 0

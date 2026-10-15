@@ -85,20 +85,13 @@ public class PlacementSystem : MonoBehaviour
         preFab.transform.position = centerWorldPos;
     }
 
-    private Vector3 GetCenterPosition(Vector3Int gridPos)
-    {
-        Vector3 center = grid.GetCellCenterWorld(gridPos);
-        center.y = 0;
-        return center;
-    }
-
     private bool CanPlaceAt(Vector3Int gridPos, Vector2Int size)
     {
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
             {
-                Vector3Int cellToCheck = gridPos + new Vector3Int(x, 0, y);
+                Vector3Int cellToCheck = gridPos;
                 if (occupiedPositions.Contains(cellToCheck))
                 {
                     return false;
@@ -114,7 +107,7 @@ public class PlacementSystem : MonoBehaviour
         {
             for (int y = 0; y < size.y; y++)
             {
-                Vector3Int cellToOccupy = gridPos + new Vector3Int(x, 0, y);
+                Vector3Int cellToOccupy = gridPos;
                 occupiedPositions.Add(cellToOccupy);
             }
         }
