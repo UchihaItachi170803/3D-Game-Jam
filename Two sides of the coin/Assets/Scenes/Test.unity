@@ -33169,10 +33169,22 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.399
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1673305140}
+        m_TargetAssemblyTypeName: ResourceManager, Assembly-CSharp
+        m_MethodName: SliderInfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &643621067
 GameObject:
   m_ObjectHideFlags: 0
@@ -83738,9 +83750,8 @@ MonoBehaviour:
   economy: 0
   rainProbability: 0
   speed: 5
-  waterSupplyedToVillage: 0
-  waterSupplyedToCity: 0
   dataBase: {fileID: 11400000, guid: 55cfb5f2fbc956a4a9a60ce12257d62f, type: 2}
+  waterSlider: {fileID: 642317028}
 --- !u!1001 &1673595986
 PrefabInstance:
   m_ObjectHideFlags: 0

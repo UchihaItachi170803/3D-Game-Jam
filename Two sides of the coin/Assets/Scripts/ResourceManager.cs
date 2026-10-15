@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -12,16 +13,18 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private float rainProbability;
     private bool IsRained;
     [SerializeField] private float speed;
-    [SerializeField] private int waterSupplyedToVillage;
-    [SerializeField] private int waterSupplyedToCity;
     [SerializeField] private ObjectDataBaseSO dataBase;
+    [SerializeField] private Slider waterSlider;
 
     float waterRateInCity = 0.5f; //Per Person
     float waterRateInVillage = 0.2f; //Per Person
 
     private float RainTimer = 20f;
     int harvestCounter = 0;
-    bool IsHarvest;
+    float TenSecTimer = 10f;
+
+    float villagePercentage;
+    float cityPercentage;
 
 
 
@@ -39,28 +42,15 @@ public class ResourceManager : MonoBehaviour
     {
         Movement();
         TimerElapsed();
-
-    }
-
-    private void TimerElapsed()
-    {
-        //Rain
-        RainTimer -= Time.deltaTime;
-        if (RainTimer <= 0)
-        {
-            RainTimer = 20f;
-            economy = (waterRateInCity*populationCity) + (waterRateInVillage*populationVillage);
-            Debug.Log("Economy :" + economy);
-            RainSystem();
-        }
+        WaterLevelCheck();
     }
 
     private void Movement()
     {
         var Horizontal = Input.GetAxisRaw("Horizontal");
         var Vertical = Input.GetAxisRaw("Vertical");
-        transform.position +=new Vector3 (Vertical,0, -Horizontal)*speed * Time.deltaTime;
-       
+        transform.position += new Vector3(Vertical, 0, -Horizontal) * speed * Time.deltaTime;
+
     }
 
     private void RainSystem()
@@ -74,7 +64,7 @@ public class ResourceManager : MonoBehaviour
             IsRained = true;
             float AddedWater;
 
-            if (harvestCounter > 0) 
+            if (harvestCounter > 0)
             {
                 AddedWater = harvestCounter * 40f;
             }
@@ -91,10 +81,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    private void WaterConsumption()
-    {
-       
-    }
     public void Tree()
     {
         economy -= 30;
@@ -104,11 +90,10 @@ public class ResourceManager : MonoBehaviour
     public void RainWaterHarvestingSystem()
     {
         economy -= 100;
-        IsHarvest = true;
         harvestCounter++;
-        
+
     }
-    
+
     public void GroundWaterSystem()
     {
         economy -= 150;
@@ -121,29 +106,120 @@ public class ResourceManager : MonoBehaviour
         waterCapacity += 80f;
     }
 
-    private void EconomyStuff()
+    public void SliderInfo()
     {
-        if(RainTimer <= 0)
-        {
+        waterNeededForCity = 800f;
+        waterNeededForVillage = 600f;
 
+        villagePercentage = waterSlider.value;
+        cityPercentage = 1f - villagePercentage;
+
+        float cityWater = waterNeededForCity * cityPercentage;
+        float villageWater = waterNeededForVillage * villagePercentage;
+
+        Debug.Log("City received: " + cityWater);
+        Debug.Log("Village received: " + villageWater);
+    }
+
+
+    private void WaterSupply()
+    {
+        waterNeededForCity = 800f;
+        waterNeededForVillage = 600f;
+
+       
+
+        float cityWater = waterNeededForCity * cityPercentage;
+        float villageWater = waterNeededForVillage * villagePercentage;
+
+        float totalWaterConsumed = cityWater + villageWater;
+
+        waterCapacity -= totalWaterConsumed;
+        waterCapacity = Mathf.Max(0f, waterCapacity);
+
+       
+        Debug.Log("City received: " + cityWater);
+        Debug.Log("Village received: " + villageWater);
+        Debug.Log("Remaining water: " + waterCapacity);
+    }
+
+
+    private void WaterLevelCheck()
+    {
+        villagePercentage = waterSlider.value;
+        cityPercentage = 1f - villagePercentage;
+        // Village
+        if (villagePercentage <= 0.2f)
+        {
+            waterRateInVillage = 0f;
+            TenSecTimer -= Time.deltaTime;
+
+            if (TenSecTimer <= 0f)
+            {
+                Debug.Log("Village Game Over");
+                TenSecTimer = 10f;
+            }
+        }
+        else if (villagePercentage <= 0.3f)
+        {
+            waterRateInVillage = 0.1f;
+        }
+        else if (villagePercentage <= 0.5f)
+        {
+            waterRateInVillage = 0.2f;
+        }
+        else
+        {
+            waterRateInVillage = 0.2f;
+        }
+
+        // City
+        if (cityPercentage <= 0.2f)
+        {
+            waterRateInCity = 0f;
+            TenSecTimer -= Time.deltaTime;
+
+            if (TenSecTimer <= 0f)
+            {
+                Debug.Log("City Game Over");
+                TenSecTimer = 10f;
+            }
+        }
+        else if (cityPercentage <= 0.3f)
+        {
+            waterRateInCity = 0.1f;
+        }
+        else if (cityPercentage <= 0.5f)
+        {
+            waterRateInCity = 0.4f;
+        }
+        else
+        {
+            waterRateInCity = 0.5f;
         }
     }
 
-    public void WaterNeed()
+    private void TimerElapsed()
     {
-        //Per person spending 0.5 for water in city 
-        // per person spending 0.2 for water in city
-        waterNeededForCity = waterCapacity * 0.8f;
-        waterNeededForVillage = waterCapacity * 0.6f;
-        if(waterNeededForCity < waterNeededForCity * 0.2f)
+        //Rain
+        RainTimer -= Time.deltaTime;
+        if (RainTimer <= 0)
         {
-
+            RainTimer = 20f;
+            economy += (waterRateInCity * populationCity) + (waterRateInVillage * populationVillage);
+            Debug.Log("Economy :" + economy);
+            WaterSupply();
+            RainSystem();
+            populationVillage += 2;
+            populationCity += 5;
+            waterCapacity = 1000;
+            Debug.Log("Village Population:" + populationVillage);
+            Debug.Log("City Population:" + populationCity);
+            Debug.Log("NewDay");
         }
-        if(waterNeededForVillage < waterNeededForVillage * 0.2f)
-        {
-
-        }
-        
 
     }
+
+
+
 }
