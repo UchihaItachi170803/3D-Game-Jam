@@ -6,6 +6,7 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] private Camera SceneCamera;
     [SerializeField] private LayerMask layer; 
+    [SerializeField] private GameObject Button;
     private Vector3 lastPosition;
 
     public event Action OnCLicked, OnExit;
@@ -19,6 +20,14 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnExit?.Invoke();
+        }
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+           Button.SetActive(true);
+        }
+        if(Input.GetKeyUp(KeyCode.Tab))
+        {
+            Button.SetActive(false);
         }
     }
 
