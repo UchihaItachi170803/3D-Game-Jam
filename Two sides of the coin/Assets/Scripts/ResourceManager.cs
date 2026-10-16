@@ -31,6 +31,8 @@ public class ResourceManager : MonoBehaviour
     float cityPercentage;
     private float dailyWaterBonus;
 
+    [SerializeField] private float villageSatisfaction;
+    [SerializeField] private float citySatisfaction;
 
 
     public float WaterCapacity => waterCapacity;
@@ -126,9 +128,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     public void SliderInfo()
-    {
-        waterNeededForCity = 800f;
-        waterNeededForVillage = 600f;
+    { 
 
         villagePercentage = waterSlider.value;
         cityPercentage = 1f - villagePercentage;
@@ -147,11 +147,13 @@ public class ResourceManager : MonoBehaviour
         
         waterNeededForCity =
             populationCity * perpersonWaterNeedCity;
+        Debug.Log("waterNeededForCity :" + waterNeededForCity);
 
         waterNeededForVillage =
             populationVillage * perpersonWaterNeedVillage;
+        Debug.Log("waterNeededForVillage :" + waterNeededForVillage);
 
-       
+
         villagePercentage = waterSlider.value;
         cityPercentage = 1f - villagePercentage;
 
@@ -168,11 +170,7 @@ public class ResourceManager : MonoBehaviour
         waterCapacity -= totalWaterConsumed;
         waterCapacity = Mathf.Max(0f, waterCapacity);
 
-        Debug.Log("City Water Demand: " + waterNeededForCity);
-        Debug.Log("Village Water Demand: " + waterNeededForVillage);
-        Debug.Log("City Water Supplied: " + cityWater);
-        Debug.Log("Village Water Supplied: " + villageWater);
-        Debug.Log("Remaining Water: " + waterCapacity);
+        
     }
 
 
@@ -180,8 +178,21 @@ public class ResourceManager : MonoBehaviour
     {
         villagePercentage = waterSlider.value;
         cityPercentage = 1f - villagePercentage;
+
+        
+        float cityNeed = populationCity * perpersonWaterNeedCity;
+        float villageNeed = populationVillage * perpersonWaterNeedVillage;
+
+        
+        float cityProvided = waterCapacity * cityPercentage;
+        float villageProvided = waterCapacity * villagePercentage;
+
+        
+        villageSatisfaction = villageNeed > 0f ? villageProvided / villageNeed : 1f;
+        citySatisfaction = cityNeed > 0f ? cityProvided / cityNeed : 1f;
+
         // Village
-        if (villagePercentage <= 0.2f)
+        if (villageSatisfaction <= 0.2f)
         {
             waterRateInVillage = 0f;
             TenSecTimer -= Time.deltaTime;
@@ -193,21 +204,24 @@ public class ResourceManager : MonoBehaviour
                 TenSecTimer = 10f;
             }
         }
-        else if (villagePercentage <= 0.3f)
+        else if (villageSatisfaction <= 0.3f)
         {
             waterRateInVillage = 0.1f;
+            Debug.Log("Village 1");
         }
-        else if (villagePercentage <= 0.5f)
+        else if (villageSatisfaction <= 0.5f)
         {
             waterRateInVillage = 0.2f;
+            Debug.Log("Village 2");
         }
         else
         {
             waterRateInVillage = 0.2f;
+            Debug.Log("Village 3");
         }
 
         // City
-        if (cityPercentage <= 0.2f)
+        if (citySatisfaction <= 0.2f)
         {
             waterRateInCity = 0f;
             TenSecTimer -= Time.deltaTime;
@@ -219,17 +233,20 @@ public class ResourceManager : MonoBehaviour
                 TenSecTimer = 10f;
             }
         }
-        else if (cityPercentage <= 0.3f)
+        else if (citySatisfaction <= 0.3f)
         {
             waterRateInCity = 0.1f;
+            Debug.Log("City 1");
         }
-        else if (cityPercentage <= 0.5f)
+        else if (citySatisfaction <= 0.5f)
         {
             waterRateInCity = 0.4f;
+            Debug.Log("City 2");
         }
         else
         {
             waterRateInCity = 0.5f;
+            Debug.Log("City 1");
         }
     }
 
@@ -252,11 +269,6 @@ public class ResourceManager : MonoBehaviour
             waterCapacity = 1000f + dailyWaterBonus;
             CurrentDay++;
 
-            Debug.Log("Economy: " + economy);
-            Debug.Log("Water Remaining: " + waterCapacity);
-            Debug.Log("Village Population: " + populationVillage);
-            Debug.Log("City Population: " + populationCity);
-            Debug.Log("Day: " + CurrentDay);
         }
     }
 
