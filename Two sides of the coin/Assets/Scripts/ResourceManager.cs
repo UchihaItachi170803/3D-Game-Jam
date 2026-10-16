@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,12 +20,31 @@ public class ResourceManager : MonoBehaviour
     float waterRateInCity = 0.5f; //Per Person
     float waterRateInVillage = 0.2f; //Per Person
 
+    float perpersonWaterNeedCity = 8;
+    float perpersonWaterNeedVillage = 6;
+
     private float RainTimer = 20f;
     int harvestCounter = 0;
     float TenSecTimer = 10f;
 
     float villagePercentage;
     float cityPercentage;
+    private float dailyWaterBonus;
+
+
+
+    public float WaterCapacity => waterCapacity;
+    public float Economy => economy;
+
+    public int CityPopulation => populationCity;
+    public int VillagePopulation => populationVillage;
+
+    public float RainProbability => rainProbability;
+
+    public int CurrentDay { get; private set; } = 1;
+
+    public float TimeUntilNextDay => Mathf.Max(0f, RainTimer);
+
 
 
 
@@ -34,7 +54,6 @@ public class ResourceManager : MonoBehaviour
         economy = 0;
         populationCity = 100;
         populationVillage = 100;
-        rainProbability = 10;
         Debug.Log(waterCapacity);
 
     }
@@ -66,14 +85,14 @@ public class ResourceManager : MonoBehaviour
 
             if (harvestCounter > 0)
             {
-                AddedWater = harvestCounter * 40f;
+                AddedWater = harvestCounter * 60f;
             }
             else
             {
                 AddedWater = 20f;
             }
 
-            waterCapacity += AddedWater;
+            dailyWaterBonus += AddedWater;
         }
         else
         {
@@ -97,13 +116,13 @@ public class ResourceManager : MonoBehaviour
     public void GroundWaterSystem()
     {
         economy -= 150;
-        waterCapacity += 60f;
+        dailyWaterBonus += 60f;
     }
 
     public void WasteWaterRecycleSystem()
     {
         economy -= 250;
-        waterCapacity += 80f;
+        dailyWaterBonus += 80f;
     }
 
     public void SliderInfo()
@@ -122,25 +141,38 @@ public class ResourceManager : MonoBehaviour
     }
 
 
+
     private void WaterSupply()
     {
-        waterNeededForCity = 800f;
-        waterNeededForVillage = 600f;
+        
+        waterNeededForCity =
+            populationCity * perpersonWaterNeedCity;
+
+        waterNeededForVillage =
+            populationVillage * perpersonWaterNeedVillage;
 
        
+        villagePercentage = waterSlider.value;
+        cityPercentage = 1f - villagePercentage;
 
-        float cityWater = waterNeededForCity * cityPercentage;
-        float villageWater = waterNeededForVillage * villagePercentage;
+        
+        float cityWater =
+            waterNeededForCity * cityPercentage;
 
+        float villageWater =
+            waterNeededForVillage * villagePercentage;
+
+        
         float totalWaterConsumed = cityWater + villageWater;
 
         waterCapacity -= totalWaterConsumed;
         waterCapacity = Mathf.Max(0f, waterCapacity);
 
-       
-        Debug.Log("City received: " + cityWater);
-        Debug.Log("Village received: " + villageWater);
-        Debug.Log("Remaining water: " + waterCapacity);
+        Debug.Log("City Water Demand: " + waterNeededForCity);
+        Debug.Log("Village Water Demand: " + waterNeededForVillage);
+        Debug.Log("City Water Supplied: " + cityWater);
+        Debug.Log("Village Water Supplied: " + villageWater);
+        Debug.Log("Remaining Water: " + waterCapacity);
     }
 
 
@@ -157,6 +189,7 @@ public class ResourceManager : MonoBehaviour
             if (TenSecTimer <= 0f)
             {
                 Debug.Log("Village Game Over");
+                Time.timeScale = 0;
                 TenSecTimer = 10f;
             }
         }
@@ -182,6 +215,7 @@ public class ResourceManager : MonoBehaviour
             if (TenSecTimer <= 0f)
             {
                 Debug.Log("City Game Over");
+                Time.timeScale = 0;
                 TenSecTimer = 10f;
             }
         }
@@ -199,26 +233,33 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
+
     private void TimerElapsed()
     {
-        //Rain
         RainTimer -= Time.deltaTime;
-        if (RainTimer <= 0)
+
+        if (RainTimer <= 0f)
         {
             RainTimer = 20f;
-            economy += (waterRateInCity * populationCity) + (waterRateInVillage * populationVillage);
-            Debug.Log("Economy :" + economy);
+
+            economy += (waterRateInCity * populationCity)
+                     + (waterRateInVillage * populationVillage);
+
             WaterSupply();
             RainSystem();
             populationVillage += 2;
             populationCity += 5;
-            waterCapacity = 1000;
-            Debug.Log("Village Population:" + populationVillage);
-            Debug.Log("City Population:" + populationCity);
-            Debug.Log("NewDay");
-        }
+            waterCapacity = 1000f + dailyWaterBonus;
+            CurrentDay++;
 
+            Debug.Log("Economy: " + economy);
+            Debug.Log("Water Remaining: " + waterCapacity);
+            Debug.Log("Village Population: " + populationVillage);
+            Debug.Log("City Population: " + populationCity);
+            Debug.Log("Day: " + CurrentDay);
+        }
     }
+
 
 
 
