@@ -13,9 +13,7 @@ public class DayNightCycle : MonoBehaviour
     public Material nightSky;      
     public Material rainySky;      
 
-    [Header("Rain System")]
-    public bool isRaining = false;
-    public ParticleSystem rainEffect;
+    
 
     [Header("Lighting")]
     public Light sunLight;
@@ -72,18 +70,6 @@ public class DayNightCycle : MonoBehaviour
             targetIntensity = 0.15f;
         }
 
-        // Handle rain override
-        if (isRaining)
-        {
-            targetSky = rainySky;
-            targetLightColor = new Color(0.45f, 0.5f, 0.6f);
-            targetIntensity = 0.35f;
-            rainAlpha = Mathf.MoveTowards(rainAlpha, 1f, Time.deltaTime * 0.8f);
-        }
-        else
-        {
-            rainAlpha = Mathf.MoveTowards(rainAlpha, 0f, Time.deltaTime * 0.8f);
-        }
 
         // Apply smoothed light color and intensity
         if (sunLight != null)
@@ -101,13 +87,6 @@ public class DayNightCycle : MonoBehaviour
             RenderSettings.skybox = targetSky;
         }
 
-        // Fade rain particle emission
-        if (rainEffect != null)
-        {
-            var emission = rainEffect.emission;
-            emission.rateOverTime = 400f * rainAlpha;
-            if (rainAlpha > 0.05f && !rainEffect.isPlaying) rainEffect.Play();
-            else if (rainAlpha <= 0.05f && rainEffect.isPlaying) rainEffect.Stop();
-        }
+      
     }
 }

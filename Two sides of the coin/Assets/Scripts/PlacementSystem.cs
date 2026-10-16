@@ -23,7 +23,8 @@ public class PlacementSystem : MonoBehaviour
         {
             {1,resourceManager.Tree },
             {2,resourceManager.RainWaterHarvestingSystem },
-            {3,resourceManager.GroundWaterSystem }
+            {3,resourceManager.GroundWaterSystem },
+            {4,resourceManager.WasteWaterRecycleSystem}
         
         };
     }

@@ -12,10 +12,11 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private float waterNeededForCity;
     public float economy;
     [SerializeField] private float rainProbability;
-    private bool IsRained;
     [SerializeField] private float speed;
     [SerializeField] private ObjectDataBaseSO dataBase;
     [SerializeField] private Slider waterSlider;
+    [SerializeField] private ParticleSystem rainvfx;
+    [SerializeField] private GameObject Gameover;
 
     float waterRateInCity = 0.5f; //Per Person
     float waterRateInVillage = 0.2f; //Per Person
@@ -56,7 +57,8 @@ public class ResourceManager : MonoBehaviour
         economy = 0;
         populationCity = 100;
         populationVillage = 100;
-        Debug.Log(waterCapacity);
+        rainvfx.Stop();
+        Gameover.SetActive(false);
 
     }
     private void Update()
@@ -76,13 +78,13 @@ public class ResourceManager : MonoBehaviour
 
     private void RainSystem()
     {
-        IsRained = false;
+        rainvfx.Stop();
         int RandomChanceToRain = Random.Range(1, 101);
         Debug.Log("Chance :" + RandomChanceToRain);
 
         if (RandomChanceToRain <= rainProbability)
         {
-            IsRained = true;
+            rainvfx.Play();
             float AddedWater;
 
             if (harvestCounter > 0)
@@ -200,7 +202,9 @@ public class ResourceManager : MonoBehaviour
             if (TenSecTimer <= 0f)
             {
                 Debug.Log("Village Game Over");
+                Gameover.SetActive(true);
                 Time.timeScale = 0;
+
                 TenSecTimer = 10f;
             }
         }
@@ -229,6 +233,7 @@ public class ResourceManager : MonoBehaviour
             if (TenSecTimer <= 0f)
             {
                 Debug.Log("City Game Over");
+                Gameover.SetActive(true);
                 Time.timeScale = 0;
                 TenSecTimer = 10f;
             }

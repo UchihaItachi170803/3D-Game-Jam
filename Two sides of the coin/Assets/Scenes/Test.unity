@@ -26601,8 +26601,6 @@ MonoBehaviour:
   eveningSky: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
   nightSky: {fileID: 2100000, guid: d1fdb8e44b28da34d9e922cca0bc740e, type: 2}
   rainySky: {fileID: 2100000, guid: b5a27fa4b11bfb24cbc6daff3802c229, type: 2}
-  isRaining: 0
-  rainEffect: {fileID: 363966301}
   sunLight: {fileID: 498939674}
 --- !u!1 &499054355
 GameObject:
@@ -49365,7 +49363,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 947254638}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 459808715}
+        m_TargetAssemblyTypeName: PlacementSystem, Assembly-CSharp
+        m_MethodName: StartPlacement
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &947254638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53432,7 +53442,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1673305138}
     m_Modifications:
     - target: {fileID: 1008899769446358754, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_Name
@@ -53440,31 +53450,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15
+      value: 7.396373
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -6.8981576
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.6408564
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0.29883626
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.29883626
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.6408564
       objectReference: {fileID: 0}
     - target: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -53483,6 +53493,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
+--- !u!4 &1022060463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4336201895350859814, guid: 2b761e9bc8e8aa94698f4b8e217b14e5, type: 3}
+  m_PrefabInstance: {fileID: 1022060462}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1023871185
 GameObject:
   m_ObjectHideFlags: 0
@@ -71297,7 +71312,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -72330,7 +72345,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -86472,7 +86487,8 @@ Transform:
   m_LocalPosition: {x: 0.53, y: 4.9, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1022060463}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 40, y: 90, z: 0}
 --- !u!114 &1673305139
@@ -86541,6 +86557,10 @@ MonoBehaviour:
   speed: 5
   dataBase: {fileID: 11400000, guid: 55cfb5f2fbc956a4a9a60ce12257d62f, type: 2}
   waterSlider: {fileID: 642317028}
+  rainvfx: {fileID: 363966301}
+  Gameover: {fileID: 1007766145}
+  villageSatisfaction: 0
+  citySatisfaction: 0
 --- !u!1001 &1673595986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -112333,63 +112353,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e85013237297b2349bda0716ddf74d80, type: 3}
---- !u!1001 &8926918429641809506
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 10.583102
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.000000010783253
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.3433405
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8250360381336293792, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8733882248101743386, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
-      propertyPath: m_Name
-      value: rain water collector
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ed4bb01a76c9f634fbbd7cb586022a73, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -112403,7 +112366,6 @@ SceneRoots:
   - {fileID: 349225197}
   - {fileID: 2007436100}
   - {fileID: 580476323}
-  - {fileID: 1022060462}
   - {fileID: 1584755214}
   - {fileID: 1011882135}
   - {fileID: 5517776073216658840}
@@ -112412,4 +112374,3 @@ SceneRoots:
   - {fileID: 6793022755346290598}
   - {fileID: 5172309093614446566}
   - {fileID: 1546890153}
-  - {fileID: 8926918429641809506}
